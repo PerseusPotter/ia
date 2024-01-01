@@ -1,32 +1,63 @@
 package com.perseuspotter.ia.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Repository;
 
 public class Project implements Serializable {
 
   private static Logger logger = new Logger("Project");
 
-  public String path;
+  private boolean loaded;
+  private String path;
 
-  public Project(String path) throws FileNotFoundException {
+  private Repository repo;
+  private boolean hasRepo;
+
+  public String getPath() {
+    return this.path;
+  }
+
+  public boolean isLoaded() {
+    return this.loaded;
+  }
+
+  public Repository getRepo() {
+    return this.hasRepo ? this.repo : null;
+  }
+
+  public boolean hasRepo() {
+    return this.hasRepo;
+  }
+
+  public Project(String path) throws IOException {
     this.path = path;
     File f = new File(path);
     if (!f.exists()) {
       logger.log("nothing at path " + path);
-      throw new FileNotFoundException("directory not found");
+      throw new IOException("directory not found");
     }
     if (f.isFile()) {
       logger.log("expected directory at " + path);
-      throw new FileNotFoundException("found file, expected directory");
+      throw new IOException("found file, expected directory");
     }
   }
 
-  public void load() {
+  public void load() throws IOException {
     File dir = new File(this.path + "/.ia");
-    if (!dir.exists()) return;
-    if (dir.isFile()) return;
+    if (dir.isFile()) throw new IOException("found file, expected directory");
+    if (dir.exists()) {
+      // load shit
+    } else {
+      // load defaults
+      this.save();
+    }
+    File git = new File(this.path + "/.git");
+    this.hasRepo = git.exists();
+    if (this.hasRepo) this.repo = new FileRepository(git);
+    this.loaded = true;
   }
 
   public void save() {}

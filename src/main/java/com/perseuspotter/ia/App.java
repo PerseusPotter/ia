@@ -1,4 +1,4 @@
-package ia;
+package com.perseuspotter.ia;
 
 import javax.swing.*;
 

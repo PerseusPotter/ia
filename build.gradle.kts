@@ -17,19 +17,13 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
-
     // This dependency is used by the application.
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.8.0.202311291450-r")
+    implementation("org.yaml:snakeyaml:2.2")
+    implementation("com.github.javaparser:javaparser-core:3.25.8")
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("ia.App")
-}
-
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+    mainClass.set("com.perseuspotter.ia.App")
 }

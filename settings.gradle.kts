@@ -8,4 +8,3 @@
  */
 
 rootProject.name = "ia"
-include("app")

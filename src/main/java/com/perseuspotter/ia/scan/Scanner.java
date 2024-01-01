@@ -68,7 +68,7 @@ public class Scanner {
   }
 
   // TODO: progress monitor
-  // TODO: remove deleted files getMissing() getRemoved()
+  // TODO: remove deleted files getMissing()
   public String[] getChangedFiles() throws IOException {
     if (this.proj.hasRepo()) {
       Repository repo = this.proj.getRepo();
@@ -79,7 +79,6 @@ public class Scanner {
       files.addAll(diff.getChanged());
       // TODO: add warning to commit files else wont be scanned
       // files.addAll(diff.getModified());
-      // files.addAll(diff.getUntracked());
       return files.toArray(new String[files.size()]);
     } else {
       File[] files = new File(this.proj.getPath())

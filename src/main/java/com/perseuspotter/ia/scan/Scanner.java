@@ -1,6 +1,8 @@
 package com.perseuspotter.ia.scan;
 
-import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.ast.CompilationUnit;
 import com.perseuspotter.ia.scan.sl.*;
 import com.perseuspotter.ia.util.Project;
@@ -48,9 +50,12 @@ public class Scanner {
     for (int i = 0; i < slReq.length; i++) r[i + slReq.length] =
       hlReq[i].init();
 
+    ParserConfiguration config = new ParserConfiguration()
+      .setLanguageLevel(LanguageLevel.JAVA_18);
+    JavaParser parser = new JavaParser(config);
     for (int i = 0; i < paths.length; i++) {
       String p = proj.getPath() + "/" + paths[i];
-      CompilationUnit cu = StaticJavaParser.parse(new File(p));
+      CompilationUnit cu = parser.parse(new File(p)).getResult().get();
 
       for (int ii = 0; ii < slReq.length; ii++) slReq[ii].scan(
           paths[i],

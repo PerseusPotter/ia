@@ -1,6 +1,8 @@
 package com.perseuspotter.ia.scan;
 
-import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -10,8 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.treewalk.FileTreeIterator;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 
 public class UMLBuilder {
 
@@ -29,8 +35,11 @@ public class UMLBuilder {
     File[] files = this.getFiles();
 
     // trust
+    ParserConfiguration config = new ParserConfiguration()
+      .setLanguageLevel(LanguageLevel.JAVA_18);
+    JavaParser parser = new JavaParser(config);
     for (File file : files) {
-      CompilationUnit cu = StaticJavaParser.parse(file);
+      CompilationUnit cu = parser.parse(file).getResult().get();
       cu
         .findAll(ClassOrInterfaceDeclaration.class, c -> c.isPublic())
         .forEach(c -> {
@@ -47,7 +56,7 @@ public class UMLBuilder {
                 "%s%s: %s;".formatted(
                     f.isPublic() ? "+" : "-",
                     f.getVariable(0).getNameAsString(),
-                    f.getCommonType()
+                    this.escape(f.getCommonType().asString())
                   )
               )
             );
@@ -56,6 +65,8 @@ public class UMLBuilder {
           c
             .findAll(MethodDeclaration.class, m -> m.isPublic())
             .forEach(m -> {
+              str.append(this.escape(m.getTypeAsString()));
+              str.append(" ");
               str.append(m.getNameAsString());
               str.append("(");
               m
@@ -64,7 +75,7 @@ public class UMLBuilder {
                   str.append(
                     "%s: %s, ".formatted(
                         p.getNameAsString(),
-                        p.getTypeAsString()
+                        this.escape(p.getTypeAsString())
                       )
                   )
                 );
@@ -93,14 +104,35 @@ public class UMLBuilder {
     return str.toString();
   }
 
+  private String escape(String str) {
+    // return str.replace("[", "［").replace("]", "］");
+    return str
+      .replaceAll("(\\S+?)\\[\\]", "Array<$1>")
+      .replace('<', '(')
+      .replace('>', ')');
+  }
+
   public File[] getFiles() throws IOException {
     if (this.proj.hasRepo()) {
       Repository repo = this.proj.getRepo();
-      FileTreeIterator tree = new FileTreeIterator(repo);
       Set<File> files = new HashSet<File>();
-      while (!tree.eof()) {
-        files.add(tree.getEntryFile());
+
+      Ref head = repo.getRefDatabase().findRef("HEAD");
+      RevWalk walk = new RevWalk(repo);
+
+      RevCommit commit = walk.parseCommit(head.getObjectId());
+      RevTree tree = commit.getTree();
+
+      TreeWalk treeWalk = new TreeWalk(repo);
+      treeWalk.addTree(tree);
+      treeWalk.setRecursive(true);
+      while (treeWalk.next()) {
+        String p = treeWalk.getPathString();
+        if (p.endsWith(".java")) files.add(new File(treeWalk.getPathString()));
       }
+
+      walk.close();
+      treeWalk.close();
       return files.toArray(new File[files.size()]);
     } else {
       return new File(this.proj.getPath())

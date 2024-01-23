@@ -9,17 +9,37 @@ import org.yaml.snakeyaml.Yaml;
 
 public final class Settings {
 
-  public static class _settings implements java.io.Serializable {
+  public record InternalProject(String path, boolean isSl) {}
 
-    public ArrayList<String> projects;
+  public static class InternalSettings implements java.io.Serializable {
+
+    public InternalSettings() {}
+
+    public InternalSettings(
+      ArrayList<InternalProject> projects,
+      boolean isDarkMode,
+      String preferredIDE
+    ) {
+      this.projects = projects;
+      this.isDarkMode = isDarkMode;
+      this.preferredIDE = preferredIDE;
+    }
+
+    public ArrayList<InternalProject> projects;
+    public boolean isDarkMode;
+    public String preferredIDE;
   }
 
-  private static _settings INSTANCE = null;
+  private static InternalSettings INSTANCE = null;
 
   private static final String fileName = "./settings.txt";
   private static Logger logger = new Logger("Settings");
 
-  public static _settings get() {
+  static {
+    Settings.load();
+  }
+
+  public static InternalSettings get() {
     return INSTANCE;
   }
 
@@ -27,10 +47,25 @@ public final class Settings {
     new Yaml().dump(INSTANCE, new FileWriter(fileName));
   }
 
+  {
+    Runtime
+      .getRuntime()
+      .addShutdownHook(
+        new Thread() {
+          public void run() {
+            try {
+              save();
+            } catch (IOException e) {}
+          }
+        }
+      );
+  }
+
   public static void load() {
     try {
       INSTANCE =
-        new Yaml().loadAs(new FileInputStream(fileName), _settings.class);
+        new Yaml()
+          .loadAs(new FileInputStream(fileName), InternalSettings.class);
     } catch (FileNotFoundException e) {
       logger.log(
         "failed to load setttings, using default\n" + e.toString(),
@@ -38,13 +73,10 @@ public final class Settings {
       );
       INSTANCE =
         new Yaml()
-          .load(
-            Settings.class.getClassLoader().getResourceAsStream("settings.yaml")
+          .loadAs(
+            Settings.class.getResourceAsStream("/settings.yaml"),
+            InternalSettings.class
           );
     }
-  }
-
-  {
-    Settings.load();
   }
 }

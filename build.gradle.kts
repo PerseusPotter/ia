@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -25,5 +26,11 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.perseuspotter.ia.App")
+    // mainClass.set("com.perseuspotter.ia.cmdapp")
+    mainClass.set("com.perseuspotter.ia.JFXEntry")
+}
+
+javafx {
+    version = "21.0.2"
+    modules("javafx.controls")
 }

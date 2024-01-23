@@ -1,0 +1,79 @@
+/* shamelessly borrowed from discord */
+.root {
+  -dark-bg: rgb(49, 51, 56);
+  -dark-txt: rgb(219, 222, 225);
+  -dark-mute-txt: rgb(148, 155, 164);
+  -dark-hover: rgba(78, 80, 88, 0.3);
+  -dark-active: rgba(78, 80, 88, 0.48);
+
+  -light-bg: rgb(227, 229, 232);
+  -light-txt: rgb(49, 51, 56);
+  -light-mute-txt: rgb(92, 94, 102);
+  -light-hover: rgba(128, 132, 142, 0.16);
+  -light-active: rgba(128, 132, 142, 0.2);
+
+  -fx-font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.bg-dark {
+  -fx-background: -dark-bg;
+}
+.bg-light {
+  -fx-background: -light-bg;
+}
+.txt-dark {
+  -fx-fill: -dark-txt;
+}
+.txt-mute-dark {
+  -fx-fill: -dark-mute-txt;
+}
+.txt-light {
+  -fx-fill: -light-txt;
+}
+.txt-mute-light {
+  -fx-fill: -light-mute-txt;
+}
+
+.content-panel-dark, .content-panel-light {
+  -fx-faint-focus-color: transparent;
+  -fx-background-color: -fx-background, -fx-control-inner-background;
+  -fx-background-insets: 0, 1;
+  -fx-padding: 0;
+}
+
+.button-dark, .button-light {
+  -fx-cursor: hand;
+  -fx-background-radius: 1em;
+}
+.button-dark {
+  -fx-background-color: -dark-bg;
+  -fx-text-fill: -dark-txt;
+}
+.button-dark:hover {
+  -fx-background-color: -dark-hover;
+}
+.button-dark:pressed {
+  -fx-background-color: -dark-active;
+}
+.button-light {
+  -fx-background-color: -light-bg;
+  -fx-text-fill: -light-txt;
+}
+.button-light:hover {
+  -fx-background-color: -light-hover;
+}
+.button-light:pressed {
+  -fx-background-color: -light-active;
+}
+
+.button-mute-dark {
+  -fx-text-fill: -dark-mute-txt;
+}
+.button-mute-light {
+  -fx-text-fill: -light-mute-txt;
+}
+
+.title {
+  -fx-font-size: 36px;
+  -fx-font-weight: bold;
+}

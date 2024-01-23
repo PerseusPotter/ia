@@ -29,13 +29,15 @@ public class Logger {
     String logFileName;
 
     do {
-      logFileName = "./logs/" + dateStr + '-' + i + ".log.gz";
+      // logFileName = "./logs/" + dateStr + '-' + i + ".log.gz";
+      logFileName = "./logs/" + dateStr + '-' + i + ".log";
       i++;
     } while (new File(logFileName).exists());
     try {
       stream =
         new PrintWriter(
-          new GZIPOutputStream(new FileOutputStream(logFileName), 8192)
+          new BufferedOutputStream(new FileOutputStream(logFileName))
+          // new GZIPOutputStream(new FileOutputStream(logFileName), 8192)
         );
     } catch (IOException e) {
       System.out.println("unable to create log file");
@@ -67,9 +69,30 @@ public class Logger {
     log(obj.toString(), lvl);
   }
 
+  {
+    Runtime
+      .getRuntime()
+      .addShutdownHook(
+        new Thread() {
+          public void run() {
+            stream.flush();
+          }
+        }
+      );
+  }
+
   public void log(String str, Level lvl) {
     // if (lvl == Level.DEBUG) return;
     LocalTime d = LocalTime.now();
+    // System.out.printf(
+    //   "[%02d:%02d:%02d] [%s/%S]: %s%n",
+    //   d.getHour(),
+    //   d.getMinute(),
+    //   d.getSecond(),
+    //   this.name,
+    //   lvl.toString(),
+    //   str
+    // );
     stream.printf(
       "[%02d:%02d:%02d] [%s/%S]: %s%n",
       d.getHour(),
@@ -79,5 +102,6 @@ public class Logger {
       lvl.toString(),
       str
     );
+    stream.flush();
   }
 }

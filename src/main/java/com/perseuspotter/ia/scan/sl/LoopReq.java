@@ -11,7 +11,7 @@ import com.perseuspotter.ia.scan.Result;
 public class LoopReq extends Requirement {
 
   public Result init() {
-    return new Result("Loop", "use a loop");
+    return new Result("Loop", "use a loop", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

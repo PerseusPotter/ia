@@ -9,11 +9,13 @@ public class Result {
 
   private String name;
   private String desc;
+  private boolean isSl;
   private List<Hit> occurences;
 
-  public Result(String name, String desc) {
+  public Result(String name, String desc, boolean isSl) {
     this.name = name;
     this.desc = desc;
+    this.isSl = isSl;
     occurences = new ArrayList<Hit>();
   }
 
@@ -27,6 +29,10 @@ public class Result {
 
   public List<Hit> getOccurences() {
     return occurences;
+  }
+
+  public boolean isSl() {
+    return isSl;
   }
 
   public void addOccurence(String path, int line, int col) {

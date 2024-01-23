@@ -11,7 +11,8 @@ public class FlagReq extends Requirement {
   public Result init() {
     return new Result(
       "Use of Constants/Flags",
-      "use compile time constants or command line arguments"
+      "use compile time constants or command line arguments",
+      true
     );
   }
 

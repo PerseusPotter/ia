@@ -11,7 +11,7 @@ import com.perseuspotter.ia.scan.Result;
 public class NestedLoopReq extends Requirement {
 
   public Result init() {
-    return new Result("Nested Loop", "use a nested loop");
+    return new Result("Nested Loop", "use a nested loop", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

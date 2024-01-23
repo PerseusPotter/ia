@@ -47,7 +47,7 @@ public class Scanner {
     String[] paths = this.getChangedFiles();
     Result[] r = new Result[slReq.length + hlReq.length];
     for (int i = 0; i < slReq.length; i++) r[i] = slReq[i].init();
-    for (int i = 0; i < slReq.length; i++) r[i + slReq.length] =
+    for (int i = 0; i < hlReq.length; i++) r[i + slReq.length] =
       hlReq[i].init();
 
     ParserConfiguration config = new ParserConfiguration()

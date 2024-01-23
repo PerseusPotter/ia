@@ -8,7 +8,7 @@ import com.perseuspotter.ia.scan.Result;
 public class IfElseReq extends Requirement {
 
   public Result init() {
-    return new Result("Simple Selection", "use of an if-else statement");
+    return new Result("Simple Selection", "use of an if-else statement", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

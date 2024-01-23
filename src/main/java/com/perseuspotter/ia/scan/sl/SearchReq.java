@@ -8,7 +8,7 @@ import com.perseuspotter.ia.scan.Result;
 public class SearchReq extends Requirement {
 
   public Result init() {
-    return new Result("Searching", "search for something (idek man)");
+    return new Result("Searching", "search for something (idek man)", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

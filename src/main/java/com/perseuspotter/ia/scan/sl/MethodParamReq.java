@@ -10,7 +10,8 @@ public class MethodParamReq extends Requirement {
   public Result init() {
     return new Result(
       "User Defined Methods with Parameters",
-      "use a method with parameters, and use the parameter"
+      "use a method with parameters, and use the parameter",
+      true
     );
   }
 

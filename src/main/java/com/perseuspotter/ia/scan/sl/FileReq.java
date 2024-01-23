@@ -10,7 +10,7 @@ import java.util.List;
 public class FileReq extends Requirement {
 
   public Result init() {
-    return new Result("File I/O", "use some sort of fs");
+    return new Result("File I/O", "use some sort of fs", true);
   }
 
   private static List<String> io = new ArrayList<String>();

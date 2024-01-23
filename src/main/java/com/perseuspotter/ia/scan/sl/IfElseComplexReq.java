@@ -12,7 +12,8 @@ public class IfElseComplexReq extends Requirement {
   public Result init() {
     return new Result(
       "Complex Selection",
-      "use of an if-else chain, or nested if, or switch"
+      "use of an if-else chain, or nested if, or switch",
+      true
     );
   }
 

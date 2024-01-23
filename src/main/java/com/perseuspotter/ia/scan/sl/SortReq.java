@@ -8,7 +8,7 @@ import com.perseuspotter.ia.scan.Result;
 public class SortReq extends Requirement {
 
   public Result init() {
-    return new Result("Sorting", "sort an array");
+    return new Result("Sorting", "sort an array", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

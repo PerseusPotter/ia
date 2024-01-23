@@ -10,7 +10,8 @@ public class LibraryReq extends Requirement {
   public Result init() {
     return new Result(
       "Use of Additional Libraries",
-      "use a library ! (not language packages)"
+      "use a library ! (not language packages)",
+      true
     );
   }
 

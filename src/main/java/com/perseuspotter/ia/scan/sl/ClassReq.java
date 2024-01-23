@@ -13,7 +13,7 @@ import com.perseuspotter.ia.scan.Result;
 public class ClassReq extends Requirement {
 
   public Result init() {
-    return new Result("User Defined Object", "use a non-static class");
+    return new Result("User Defined Object", "use a non-static class", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

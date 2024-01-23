@@ -8,7 +8,7 @@ import com.perseuspotter.ia.scan.Result;
 public class MethodReq extends Requirement {
 
   public Result init() {
-    return new Result("User Defined Methods", "use a method");
+    return new Result("User Defined Methods", "use a method", true);
   }
 
   public void scan(String fp, CompilationUnit cu, Result res) {

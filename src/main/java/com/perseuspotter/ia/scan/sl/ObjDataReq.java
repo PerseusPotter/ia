@@ -13,7 +13,11 @@ import com.perseuspotter.ia.scan.Result;
 public class ObjDataReq extends Requirement {
 
   public Result init() {
-    return new Result("Data Object", "use an object (class) as a data record");
+    return new Result(
+      "Data Object",
+      "use an object (class) as a data record",
+      true
+    );
   }
 
   // too much effort to scan across files to double check if it actually is accessed as a data record

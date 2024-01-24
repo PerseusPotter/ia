@@ -75,7 +75,7 @@ public class BasePanel {
   protected static List<Region> backgrounds = new ArrayList<Region>();
   protected static List<Text> textNodes = new ArrayList<Text>();
   protected static List<Text> mutedNodes = new ArrayList<Text>();
-  protected static List<Button> buttons = new ArrayList<Button>();
+  protected static List<Region> buttons = new ArrayList<Region>();
 
   public static void updateColors() {
     scrollPanes.forEach(n -> {
@@ -120,7 +120,7 @@ public class BasePanel {
     addMuted(v);
   }
 
-  public void _addButton(Button v) {
+  public void _addButton(Region v) {
     addButton(v);
   }
 
@@ -146,7 +146,7 @@ public class BasePanel {
     t.getStyleClass().add("txt-mute-" + getVisMode());
   }
 
-  public static void addButton(Button b) {
+  public static void addButton(Region b) {
     buttons.add(b);
     b.getStyleClass().add("button-" + getVisMode());
   }

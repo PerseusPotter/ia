@@ -9,14 +9,12 @@ import org.yaml.snakeyaml.Yaml;
 
 public final class Settings {
 
-  public record InternalProject(String path, boolean isSl) {}
-
   public static class InternalSettings implements java.io.Serializable {
 
     public InternalSettings() {}
 
     public InternalSettings(
-      ArrayList<InternalProject> projects,
+      ArrayList<String> projects,
       boolean isDarkMode,
       String preferredIDE
     ) {
@@ -25,7 +23,7 @@ public final class Settings {
       this.preferredIDE = preferredIDE;
     }
 
-    public ArrayList<InternalProject> projects;
+    public ArrayList<String> projects;
     public boolean isDarkMode;
     public String preferredIDE;
   }

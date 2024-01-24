@@ -21,7 +21,7 @@ public class Scanner {
     this.proj = p;
   }
 
-  private static Requirement[] slReq = new Requirement[] {
+  public static final Requirement[] slReq = new Requirement[] {
     new ArrayReq(),
     new ClassReq(),
     new ObjDataReq(),
@@ -39,7 +39,7 @@ public class Scanner {
     new FlagReq(),
   };
 
-  private static Requirement[] hlReq;
+  public static final Requirement[] hlReq = new Requirement[] {};
 
   public Result[] scan() throws IOException {
     if (!this.proj.isLoaded()) this.proj.load();
@@ -57,16 +57,27 @@ public class Scanner {
       String p = proj.getPath() + "/" + paths[i];
       CompilationUnit cu = parser.parse(new File(p)).getResult().get();
 
-      for (int ii = 0; ii < slReq.length; ii++) slReq[ii].scan(
-          paths[i],
-          cu,
-          r[ii]
-        );
-      for (int ii = 0; ii < hlReq.length; ii++) hlReq[ii].scan(
-          paths[i],
-          cu,
-          r[ii + slReq.length]
-        );
+      int c = 0;
+      if (this.proj.isSl()) {
+        for (int ii = 0; ii < slReq.length; ii++) {
+          if (!this.proj.doScanReq(ii)) {
+            if (this.proj.isForceOn(ii)) c++;
+            continue;
+          }
+          slReq[ii].scan(paths[i], cu, r[ii]);
+          if (r[ii].getOccurences().size() > 0) c++;
+        }
+      } else {
+        for (int ii = 0; ii < hlReq.length; ii++) {
+          if (!this.proj.doScanReq(ii + slReq.length)) {
+            if (this.proj.isForceOn(ii + slReq.length)) c++;
+            continue;
+          }
+          hlReq[ii].scan(paths[i], cu, r[ii + slReq.length]);
+          if (r[ii + slReq.length].getOccurences().size() > 0) c++;
+        }
+      }
+      this.proj.setNumReqsCompleted(c);
     }
 
     return r;

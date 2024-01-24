@@ -13,6 +13,9 @@ public class JFXEntry extends Application {
   @Override
   public void start(Stage prStage) {
     prStage.setTitle("IATils");
+    prStage.setWidth(800);
+    prStage.setHeight(500);
+
     MainMenu menu = new MainMenu();
     prStage.setScene(menu.getScene());
     prStage.show();
